@@ -91,31 +91,3 @@ weekly sales reports genarator manager/
 └── README.md               ← This file
 ```
 
----
-
-## 🌐 Online Deployment
-
-The easiest way to use this tool online is via **Streamlit Community Cloud**.
-
-### 1 — Push to GitHub
-1.  Create a new repository on [GitHub](https://github.com).
-2.  Initialize git in your local folder:
-    ```bash
-    git init
-    git add .
-    git commit -m "Initial commit"
-    ```
-3.  Link to your GitHub repo and push:
-    ```bash
-    git remote add origin YOUR_GITHUB_REPO_URL
-    git branch -M main
-    git push -u origin main
-    ```
-
-### 2 — Deploy to Streamlit Cloud
-1.  Go to [share.streamlit.io](https://share.streamlit.io).
-2.  Click **"New app"**.
-3.  Select your repository, branch (`main`), and main file path (`app.py`).
-4.  Click **"Deploy!"**.
-
-Your tool will be live at a public URL (e.g., `https://st-george-reports.streamlit.app`).
