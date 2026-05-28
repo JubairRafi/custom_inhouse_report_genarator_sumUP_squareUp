@@ -42,6 +42,9 @@ st.set_page_config(
     initial_sidebar_state="collapsed",
 )
 
+import auth
+auth.require_login()
+
 # ─────────────────────────────────────────────────────────────────────────────
 # CSS — premium dark theme (purple accent)
 # ─────────────────────────────────────────────────────────────────────────────
