@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import hmac
+import os
 import pathlib
 import time
 
@@ -16,16 +17,29 @@ def _hash(password: str) -> str:
 
 
 def _load_users() -> dict[str, str]:
-    """Parse users.txt into {username: sha256hex}. Missing file -> {}."""
+    """Collect {username: sha256hex} from users.txt and/or env vars.
+
+    On hosted platforms (e.g. Railway) the filesystem is ephemeral, so set
+    APP_USERNAME + APP_PASSWORD_HASH env vars there instead of a file.
+    Env credentials take precedence over the file.
+    """
     users: dict[str, str] = {}
-    if not USERS_FILE.exists():
-        return users
-    for raw in USERS_FILE.read_text(encoding="utf-8").splitlines():
-        line = raw.strip()
-        if not line or line.startswith("#") or ":" not in line:
-            continue
-        username, pw_hash = line.split(":", 1)
-        users[username.strip()] = pw_hash.strip()
+
+    # 1) Local file (used in development).
+    if USERS_FILE.exists():
+        for raw in USERS_FILE.read_text(encoding="utf-8").splitlines():
+            line = raw.strip()
+            if not line or line.startswith("#") or ":" not in line:
+                continue
+            username, pw_hash = line.split(":", 1)
+            users[username.strip()] = pw_hash.strip()
+
+    # 2) Environment variables (used in hosted/production).
+    env_user = os.environ.get("APP_USERNAME", "").strip()
+    env_hash = os.environ.get("APP_PASSWORD_HASH", "").strip()
+    if env_user and env_hash:
+        users[env_user] = env_hash
+
     return users
 
 

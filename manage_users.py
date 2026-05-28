@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import getpass
 import pathlib
+import sys
 
 from auth import _hash
 
@@ -31,5 +32,21 @@ def main() -> None:
     print(f"\nSaved {USERS_FILE.name} for user '{username}'.")
 
 
+def hash_only() -> None:
+    """Print the hash for a password — paste it into APP_PASSWORD_HASH (e.g. Railway)."""
+    password = getpass.getpass("Password: ")
+    confirm = getpass.getpass("Confirm password: ")
+    if password != confirm:
+        print("Passwords do not match.")
+        return
+    if not password:
+        print("Password cannot be empty.")
+        return
+    print("\nAPP_PASSWORD_HASH=" + _hash(password))
+
+
 if __name__ == "__main__":
-    main()
+    if "--hash" in sys.argv:
+        hash_only()
+    else:
+        main()
